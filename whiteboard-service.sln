@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Whiteboard.Service", "Whiteboard.Service\Whiteboard.Service.csproj", "{7710366D-9090-4B58-A25D-2381690B9B7A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Whiteboard.DataAccess", "Whiteboard.DataAccess\Whiteboard.DataAccess.csproj", "{FD1CC573-B157-4D60-8751-652E71286B3F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7710366D-9090-4B58-A25D-2381690B9B7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7710366D-9090-4B58-A25D-2381690B9B7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7710366D-9090-4B58-A25D-2381690B9B7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7710366D-9090-4B58-A25D-2381690B9B7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD1CC573-B157-4D60-8751-652E71286B3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD1CC573-B157-4D60-8751-652E71286B3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD1CC573-B157-4D60-8751-652E71286B3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD1CC573-B157-4D60-8751-652E71286B3F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {94AA2859-5FC8-4FC0-9B23-C14741FA0D95}
+	EndGlobalSection
+EndGlobal

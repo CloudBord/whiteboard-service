@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Whiteboard.DataAccess
+namespace Whiteboard.DataAccess.Repositories
 {
-    public class DbContext
+    public class BoardRepository : IBoardRepository
     {
-
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Whiteboard.DataAccess.Entities
 {
-    public class Whiteboard
+    public class Board
     {
         [Key]
         public int Id { get; set; }
@@ -17,7 +17,7 @@ namespace Whiteboard.DataAccess.Entities
         public required string Name { get; set; }
         public ICollection<int> MemberIds { get; set; } = [];
 
-        public Whiteboard() 
+        public Board() 
         {
             if(!MemberIds.Contains(OwnerId)) MemberIds.Add(OwnerId);
         }

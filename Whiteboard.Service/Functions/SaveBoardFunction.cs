@@ -2,9 +2,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
+using Whiteboard.DataAccess.Context;
 using Whiteboard.DataAccess.Repositories;
 
-namespace Whiteboard.Service
+namespace Whiteboard.Service.Functions
 {
     public class SaveBoardFunction(ILogger<SaveBoardFunction> logger, IBoardRepository whiteboardRepository)
     {

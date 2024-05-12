@@ -1,5 +1,4 @@
-﻿using Microsoft.Azure.Cosmos.Core;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -15,7 +14,7 @@ namespace Whiteboard.DataAccess.Context
     {
         public DbSet<Board> Boards { get; set; }
 
-        //public BoardContext() { }
+        public BoardContext() { }
 
         public BoardContext(DbContextOptions<BoardContext> options) : base(options) { }
 
@@ -29,10 +28,21 @@ namespace Whiteboard.DataAccess.Context
         {
             modelBuilder.HasDefaultContainer("BoardContainer");
 
+            //var boardModel = modelBuilder.Entity<Board>();
+
+            //boardModel.Property(p => p.OwnerId)
+            //    .HasConversion<string>();
+
+            //boardModel.HasNoDiscriminator()
+            //    .HasPartitionKey(b => b.OwnerId)
+            //    .HasKey(b => b.Id);
+
             modelBuilder.Entity<Board>()
-                .HasNoDiscriminator()
+                .ToContainer("BoardContainer")
                 .HasPartitionKey(b => b.OwnerId)
-                .HasKey(b => b.Id);
+                .HasNoDiscriminator();
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

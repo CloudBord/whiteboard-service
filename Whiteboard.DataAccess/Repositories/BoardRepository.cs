@@ -1,5 +1,5 @@
-﻿using Microsoft.Azure.Cosmos;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,15 +17,6 @@ namespace Whiteboard.DataAccess.Repositories
         public BoardRepository(BoardContext boardContext)
         {
             _boardContext = boardContext;
-            try
-            {
-               _boardContext.Database.GetCosmosClient().ReadAccountAsync().ConfigureAwait(false);
-            }
-            catch(HttpRequestException ex)
-            {
-                Console.WriteLine("Could not connect to CosmosDB");
-            }
-            Console.WriteLine("Connected to CosmosDB");
         }
 
         public Task Add(Board board)
@@ -40,8 +31,21 @@ namespace Whiteboard.DataAccess.Repositories
 
         public async Task<Board?> GetById(uint id)
         {
-            var board =  await _boardContext.Boards.FindAsync(id);
-            return board;
+            using(var context = new BoardContext())
+            {
+                //var contents = _boardContext.Boards.ToList();
+                var board = await _boardContext.Boards.Where(b => b.OwnerId.Equals("6a0dfaef-a375-494b-b5eb-86c4314870ff")).FirstAsync();
+                return board;
+            }
+            //_boardContext.Add(new Board
+            //    {
+            //        Id = id,
+            //        BoardId = Guid.NewGuid(),
+            //        Name = "Test Board",
+            //        OwnerId = id
+            //    });
+
+            //await _boardContext.SaveChangesAsync();
         }
 
         public Task<IEnumerable<Board>> GetByMemberId(string memberId)

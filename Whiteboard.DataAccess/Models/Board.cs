@@ -12,8 +12,8 @@ namespace Whiteboard.DataAccess.Models
     {
         [JsonProperty("id")]
         public uint Id { get; set; }
-        //[JsonProperty("boardId")]
-        //public required string BoardId { get; set; }
+        [JsonProperty("boardId")]
+        public required string BoardId { get; set; }
         [JsonProperty("ownerId")]
         public required string OwnerId { get; set; }
         [JsonProperty("name")]

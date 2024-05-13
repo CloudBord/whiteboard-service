@@ -1,0 +1,12 @@
+services:
+    boards-db:
+        container_name: board-db
+        image: postgres
+        ports:
+            - 5432:5432
+        environment:
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_DB: boards
+        networks:
+            - board_internal

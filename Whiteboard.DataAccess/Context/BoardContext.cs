@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -12,15 +13,28 @@ namespace Whiteboard.DataAccess.Context
 {
     public class BoardContext : DbContext, IBoardContext
     {
+        private readonly IConfiguration _configuration;
+
         public DbSet<Board> Boards { get; set; }
 
-        public BoardContext() { }
+        public BoardContext(IConfiguration configuration) 
+        {
+            _configuration = configuration;
+        }
 
-        public BoardContext(DbContextOptions<BoardContext> options) : base(options) { }
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
+        {
+            options.UseNpgsql(
+                Environment.GetEnvironmentVariable("ConnectionStrings:Npgsql"),
+                options =>
+                {
+                    options.EnableRetryOnFailure(5, TimeSpan.FromSeconds(15), null);
+                });
+            
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
         }
     }
 }

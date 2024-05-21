@@ -25,7 +25,7 @@ namespace Whiteboard.DataAccess.Context
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             options.UseNpgsql(
-                Environment.GetEnvironmentVariable("ConnectionStrings:Npgsql"),
+                _configuration["ConnectionStrings:Npgsql"], 
                 options =>
                 {
                     options.EnableRetryOnFailure(5, TimeSpan.FromSeconds(15), null);

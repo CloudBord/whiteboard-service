@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -12,37 +13,28 @@ namespace Whiteboard.DataAccess.Context
 {
     public class BoardContext : DbContext, IBoardContext
     {
+        private readonly IConfiguration _configuration;
+
         public DbSet<Board> Boards { get; set; }
 
-        public BoardContext() { }
+        public BoardContext(IConfiguration configuration) 
+        {
+            _configuration = configuration;
+        }
 
-        public BoardContext(DbContextOptions<BoardContext> options) : base(options) { }
-
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //    => optionsBuilder.UseCosmos(
-        //        "https://localhost:8081",
-        //        "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
-        //        databaseName: "BoardsDB");
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
+        {
+            options.UseNpgsql(
+                _configuration["ConnectionStrings:Npgsql"], 
+                options =>
+                {
+                    options.EnableRetryOnFailure(5, TimeSpan.FromSeconds(15), null);
+                });
+            
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasDefaultContainer("BoardContainer");
-
-            //var boardModel = modelBuilder.Entity<Board>();
-
-            //boardModel.Property(p => p.OwnerId)
-            //    .HasConversion<string>();
-
-            //boardModel.HasNoDiscriminator()
-            //    .HasPartitionKey(b => b.OwnerId)
-            //    .HasKey(b => b.Id);
-
-            modelBuilder.Entity<Board>()
-                .ToContainer("BoardContainer")
-                .HasPartitionKey(b => b.OwnerId)
-                .HasNoDiscriminator();
-
-            base.OnModelCreating(modelBuilder);
         }
     }
 }

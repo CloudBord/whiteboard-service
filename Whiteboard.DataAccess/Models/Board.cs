@@ -12,18 +12,18 @@ namespace Whiteboard.DataAccess.Models
     {
         [JsonProperty("id")]
         public uint Id { get; set; }
-        //[JsonProperty("boardId")]
-        //public required string BoardId { get; set; }
+        [JsonProperty("boardId")]
+        public Guid BoardId { get; set; }
         [JsonProperty("ownerId")]
-        public required string OwnerId { get; set; }
+        public Guid OwnerId { get; set; }
         [JsonProperty("name")]
         public required string Name { get; set; }
         [JsonProperty("memberIds")]
-        public List<string> MemberIds { get; set; } = [];
+        public List<Guid> MemberIds { get; set; } = [];
 
         public Board() 
         {
-            if(OwnerId != null && !MemberIds.Contains(OwnerId)) MemberIds.Add(OwnerId);
+            if(!MemberIds.Contains(OwnerId)) MemberIds.Add(OwnerId);
         }
     }
 }

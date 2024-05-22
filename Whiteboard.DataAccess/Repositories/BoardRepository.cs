@@ -31,21 +31,8 @@ namespace Whiteboard.DataAccess.Repositories
 
         public async Task<Board?> GetById(uint id)
         {
-            using(var context = new BoardContext())
-            {
-                //var contents = _boardContext.Boards.ToList();
-                var board = await _boardContext.Boards.Where(b => b.OwnerId.Equals("6a0dfaef-a375-494b-b5eb-86c4314870ff")).FirstAsync();
-                return board;
-            }
-            //_boardContext.Add(new Board
-            //    {
-            //        Id = id,
-            //        BoardId = Guid.NewGuid(),
-            //        Name = "Test Board",
-            //        OwnerId = id
-            //    });
-
-            //await _boardContext.SaveChangesAsync();
+            var board = await _boardContext.Boards.Where(b => b.OwnerId.Equals("6a0dfaef-a375-494b-b5eb-86c4314870ff")).FirstAsync();
+            return board;
         }
 
         public Task<IEnumerable<Board>> GetByMemberId(string memberId)

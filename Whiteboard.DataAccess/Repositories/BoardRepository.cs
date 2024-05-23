@@ -1,10 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Whiteboard.DataAccess.Context;
 using Whiteboard.DataAccess.Models;
 
@@ -24,23 +18,23 @@ namespace Whiteboard.DataAccess.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<bool> Delete(Guid boardId)
+        public Task<bool> Delete(uint boardId)
         {
             throw new NotImplementedException();
         }
 
         public async Task<Board?> GetById(uint id)
         {
-            var board = await _boardContext.Boards.Where(b => b.OwnerId.Equals("6a0dfaef-a375-494b-b5eb-86c4314870ff")).FirstAsync();
+            var board = await _boardContext.Boards.Where(b => b.Id.Equals(id)).FirstOrDefaultAsync();
             return board;
         }
 
-        public Task<IEnumerable<Board>> GetByMemberId(string memberId)
+        public Task<IEnumerable<Board>> GetByMemberId(uint memberId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Board>> GetByOwnerId(string ownerId)
+        public Task<IEnumerable<Board>> GetByOwnerId(uint ownerId)
         {
             throw new NotImplementedException();
         }

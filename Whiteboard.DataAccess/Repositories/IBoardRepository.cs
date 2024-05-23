@@ -11,9 +11,9 @@ namespace Whiteboard.DataAccess.Repositories
     {
         Task Add(Board board);
         Task<Board?> GetById(uint id);
-        Task<IEnumerable<Board>> GetByMemberId(string memberId);
-        Task<IEnumerable<Board>> GetByOwnerId(string ownerId);
+        Task<IEnumerable<Board>> GetByMemberId(uint memberId);
+        Task<IEnumerable<Board>> GetByOwnerId(uint ownerId);
         Task<Board> Update(Board board);
-        Task<bool> Delete(Guid boardId);
+        Task<bool> Delete(uint boardId);
     }
 }

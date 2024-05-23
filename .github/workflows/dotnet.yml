@@ -29,6 +29,6 @@ jobs:
     - name: Setup Entity Framework tool
       run: dotnet tool install --global dotnet-ef
     - name: Run migrations
-      run: dotnet ef database update --startup-project .\Whiteboard.Service --project .\Whiteboard.DataAccess
+      run: dotnet ef database update --startup-project Whiteboard.Service --project Whiteboard.DataAccess
     # - name: Test
     #   run: dotnet test --no-build --verbosity normal

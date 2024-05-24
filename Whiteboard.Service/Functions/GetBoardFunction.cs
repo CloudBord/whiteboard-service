@@ -16,7 +16,6 @@ namespace Whiteboard.Service.Functions
         {
             try
             {
-                Console.WriteLine("id = " + id);
                 var board = await _whiteboardRepository.GetById(id).ConfigureAwait(false);
                 if (board == null) return new OkObjectResult("No board exists");
                 return new OkObjectResult("Here is board with id " + id);

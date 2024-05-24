@@ -2,8 +2,13 @@
   "profiles": {
     "Whiteboard.Service": {
       "commandName": "Project",
-      "commandLineArgs": "--port 7276",
-      "launchBrowser": false
+      "commandLineArgs": "--port 7276"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "httpPort": 30304,
+      "useSSL": false
     }
   }
 }

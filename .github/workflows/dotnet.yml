@@ -25,12 +25,12 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Setup testing database
-      env:
-        CONNECTIONSTRINGS__NPGSQL: ${{ secrets.CONNECTIONSTRINGS_NPGSQL_TEST }}
       run: docker run -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres
     - name: Setup Entity Framework tool
       run: dotnet tool install --global dotnet-ef
     - name: Run migrations
+      env:
+        CONNECTIONSTRINGS__NPGSQL: ${{ secrets.CONNECTIONSTRINGS_NPGSQL_TEST }}
       run: dotnet ef database update --startup-project Whiteboard.Service --project Whiteboard.DataAccess
     # - name: Test
     #   run: dotnet test --no-build --verbosity normal

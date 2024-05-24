@@ -1,0 +1,21 @@
+services:
+    boards-db:
+        container_name: boards-db
+        image: postgres
+        ports:
+            - 5432:5432
+        environment:
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_DB: boards
+
+    keycloak-db:
+        container_name: keycloak-db
+
+    keycloak-service:
+        container_name: keycloak-service
+        image: quay.io/keycloak/keycloak:24.0.4
+        ports:
+            - 8080:8080
+        depends_on:
+            - keycloak-db

@@ -23,10 +23,10 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      env:
-        CONNECTIONSTRINGS_NPGSQL: ${{ secrets.CONNECTIONSTRINGS_NPGSQL_TEST }}
       run: dotnet build --no-restore
     - name: Setup testing database
+      env:
+        CONNECTIONSTRINGS__NPGSQL: ${{ secrets.CONNECTIONSTRINGS_NPGSQL_TEST }}
       run: docker run -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres
     - name: Setup Entity Framework tool
       run: dotnet tool install --global dotnet-ef

@@ -5,6 +5,11 @@ on:
     workflows: ["Test"]
     types:
       - completed
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+    
 
 jobs:
   build:
@@ -13,13 +18,20 @@ jobs:
       run:
         shell: bash
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - uses: azure/docker-login@v1
       with:
-        login-server: cloudbordcontainer.azurecr.io
+        login-server: ${{ secrets.ACR_LOGIN_SERVER }}
         username: ${{ secrets.ACR_USERNAME }}
         password: ${{ secrets.ACR_PASSWORD }}
     - name: build image
-      run: docker build . -t cloudbordcontainer.azurecr.io/whiteboard-service
-    - name: deploy
-      run: docker push cloudbordcontainer.azurecr.io/whiteboard-service
+      uses: docker/setup-buildx-action@v1
+
+    - name: Build and push
+      uses: docker/build-push-action@v5
+      
+      with:
+        context: .
+        file: ./Whiteboard.Service/Dockerfile
+        push: true
+        tags: ${{ secrets.ACR_LOGIN_SERVER }}/${{ secrets.ACR_REPOSITORY }}

@@ -12,7 +12,7 @@ services:
     whiteboard-service:
         container_name: whiteboard-service
         build:
-            context: .
+            context: .\Whiteboard.Service
             dockerfile: Dockerfile
         ports:
             - 8080:8080

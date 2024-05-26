@@ -11,7 +11,7 @@ using Whiteboard.DataAccess.Context;
 namespace Whiteboard.DataAccess.Migrations
 {
     [DbContext(typeof(BoardContext))]
-    [Migration("20240523123224_InitialCreate")]
+    [Migration("20240526180735_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

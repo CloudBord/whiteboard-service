@@ -5,6 +5,11 @@ on:
     workflows: ["Test"]
     types:
       - completed
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+    
 
 jobs:
   build:
@@ -29,4 +34,4 @@ jobs:
         context: .
         file: ./Whiteboard.Service/Dockerfile
         push: true
-        tags: ${{ secrets.ACR_LOGIN_SERVER }}
+        tags: ${{ secrets.ACR_LOGIN_SERVER }}/${{ secrets.ACR_REPOSITORY }}

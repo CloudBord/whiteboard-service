@@ -13,9 +13,12 @@ namespace Whiteboard.DataAccess.Repositories
             _boardContext = boardContext;
         }
 
-        public Task Add(Board board)
+        public async Task<Board> Add(Board board)
         {
-            throw new NotImplementedException();
+            board.MemberIds.Add(board.OwnerId);
+            await _boardContext.Boards.AddAsync(board);
+            await _boardContext.SaveChangesAsync();
+            return board;
         }
 
         public Task<bool> Delete(uint boardId)

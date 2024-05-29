@@ -9,7 +9,7 @@ namespace Whiteboard.DataAccess.Repositories
 {
     public interface IBoardRepository
     {
-        Task Add(Board board);
+        Task<Board> Add(Board board);
         Task<Board?> GetById(uint id);
         Task<IEnumerable<Board>> GetByMemberId(uint memberId);
         Task<IEnumerable<Board>> GetByOwnerId(uint ownerId);

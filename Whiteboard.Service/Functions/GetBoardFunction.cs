@@ -1,29 +1,32 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using Whiteboard.DataAccess.Repositories;
+using Whiteboard.Service.Models;
+using Whiteboard.Service.Services;
 
 namespace Whiteboard.Service.Functions
 {
-    public class GetBoardFunction(ILogger<GetBoardFunction> logger, IBoardRepository whiteboardRepository)
+    public class GetBoardFunction(ILogger<SaveBoardFunction> logger, IBoardService boardService, IMapper mapper)
     {
-        private readonly ILogger<GetBoardFunction> _logger = logger;
-        private readonly IBoardRepository _whiteboardRepository = whiteboardRepository;
+        private readonly ILogger<SaveBoardFunction> _logger = logger;
+        private readonly IBoardService _boardService = boardService;
+        private readonly IMapper _mapper = mapper;
 
         [Function("GetBoard")]
-        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "GetBoard/{id}")] HttpRequest req, uint id)
+        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "boards/{id}")] HttpRequest req, uint id)
         {
             try
             {
-                var board = await _whiteboardRepository.GetById(id).ConfigureAwait(false);
-                if (board == null) return new OkObjectResult("No board exists");
-                return new OkObjectResult("Here is board with id " + id);
+                var board = await _boardService.GetById(id);
+                BoardDTO boardDto = _mapper.Map<BoardDTO>(board);
+                return new OkObjectResult(boardDto);
             }
             catch (Exception ex)
             {
                 _logger.LogInformation("An exception occured: " + ex.Message);
-                return new BadRequestObjectResult(ex.Message);
+                return new BadRequestObjectResult("Bad things have happened!");
             }
         }
     }

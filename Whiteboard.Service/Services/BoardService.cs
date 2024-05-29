@@ -1,13 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Whiteboard.DataAccess.Models;
 using Whiteboard.DataAccess.Repositories;
-using Whiteboard.Service.Functions;
-using Whiteboard.Service.Models;
 
 namespace Whiteboard.Service.Services
 {
@@ -26,9 +19,9 @@ namespace Whiteboard.Service.Services
                 });
         }
 
-        public async Task DeleteBoard(Board board)
+        public async Task<bool> DeleteBoard(uint boardId, uint ownerId)
         {
-            throw new NotImplementedException();
+            return await _whiteboardRepository.Delete(boardId, ownerId);
         }
 
         public async Task<ICollection<Board>> GetAllBoards(uint userId)
@@ -36,13 +29,14 @@ namespace Whiteboard.Service.Services
             throw new NotImplementedException();
         }
 
-        public async Task<Board?> GetById(uint id)
+        public async Task<Board?> GetBoard(uint boardId, uint memberId)
         {
-            return await _whiteboardRepository.GetById(id);
+            return await _whiteboardRepository.GetByBoardIdAndUserId(boardId, memberId);
         }
 
-        public async Task UdateBoard(Board board)
+        public async Task UpdateBoard(Board board)
         {
+            //Board board = await _whiteboardRepository.GetByBoardIdAndUserId(board.)
             throw new NotImplementedException();
         }
     }

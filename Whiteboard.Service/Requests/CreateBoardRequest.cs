@@ -1,15 +1,10 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
 namespace Whiteboard.Service.Request
 {
     public class CreateBoardRequest
     {
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public required string Name { get; set; }
 
         public CreateBoardRequest() { }

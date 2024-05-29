@@ -19,7 +19,7 @@ namespace Whiteboard.Service.Functions
         {
             try
             {
-                var board = await _boardService.GetById(id);
+                var board = await _boardService.GetBoard(id, 1);
                 BoardDTO boardDto = _mapper.Map<BoardDTO>(board);
                 return new OkObjectResult(boardDto);
             }

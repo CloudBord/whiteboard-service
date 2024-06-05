@@ -9,11 +9,11 @@ namespace Whiteboard.DataAccess.Repositories
 {
     public interface IBoardRepository
     {
-        Task Add(Board board);
-        Task<Board?> GetById(uint id);
-        Task<IEnumerable<Board>> GetByMemberId(uint memberId);
-        Task<IEnumerable<Board>> GetByOwnerId(uint ownerId);
-        Task<Board> Update(Board board);
-        Task<bool> Delete(uint boardId);
+        Task<Board> Add(Board board);
+        Task<Board?> GetByBoardIdAndUserId(uint boardId, uint userId);
+        Task<IEnumerable<Board>> GetByMemberId(uint userId);
+        Task<IEnumerable<Board>> GetByOwnerId(uint userId);
+        Task<Board> Update(Board board, uint memberId);
+        Task<bool> Delete(uint boardId, uint ownerId);
     }
 }

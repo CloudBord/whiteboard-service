@@ -10,7 +10,7 @@ namespace Whiteboard.DataAccess.Repositories
         private readonly BoardContext _boardContext;
         private readonly ILogger _logger;
 
-        public BoardRepository(BoardContext boardContext, ILogger logger)
+        public BoardRepository(BoardContext boardContext, ILogger<BoardRepository> logger)
         {
             _boardContext = boardContext;
             _logger = logger;

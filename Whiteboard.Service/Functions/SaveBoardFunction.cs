@@ -12,11 +12,11 @@ namespace Whiteboard.Service.Functions
 {
     public class SaveBoardFunction(ILogger<SaveBoardFunction> logger, IBoardService boardService)
     {
-        private readonly ILogger<SaveBoardFunction> _logger = logger;
+        private readonly ILogger _logger = logger;
         private readonly IBoardService _boardService = boardService;
 
         [Function("SaveBoard")]
-        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "put")] HttpRequest req)
+        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "boards")] HttpRequest req)
         {
             var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var saveBoardRequest = JsonSerializer.Deserialize<SaveBoardRequest>(requestBody, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });

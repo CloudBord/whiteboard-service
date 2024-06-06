@@ -8,14 +8,14 @@ using Whiteboard.Service.Services;
 
 namespace Whiteboard.Service.Functions
 {
-    public class GetBoardFunction(ILogger<SaveBoardFunction> logger, IBoardService boardService, IMapper mapper)
+    public class GetBoardFunction(ILogger<GetBoardFunction> logger, IBoardService boardService, IMapper mapper)
     {
-        private readonly ILogger<SaveBoardFunction> _logger = logger;
+        private readonly ILogger _logger = logger;
         private readonly IBoardService _boardService = boardService;
         private readonly IMapper _mapper = mapper;
 
         [Function("GetBoard")]
-        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "boards/{id}")] HttpRequest req, uint id)
+        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "boards/{id}")] HttpRequest req, uint id)
         {
             try
             {

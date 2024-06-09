@@ -1,59 +1,8 @@
+version: '3.4'
+
 services:
-    boards-db:
-        container_name: boards-db
-        image: postgres
-        ports:
-            - 5432:5432
-        environment:
-            POSTGRES_USER: ${POSTGRES_USER}
-            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-            POSTGRES_DB: ${POSTGRES_DBNAME}
-
-    whiteboard-service:
-        container_name: whiteboard-service
-        build:
-            context: .\Whiteboard.Service
-            dockerfile: Dockerfile
-        ports:
-            - 8080:8080
-        environment:
-            ConnectionStrings:Npgsql: ${DB_CONN}
-        depends_on:
-            - boards-db
-
-    keycloak:
-        image: quay.io/keycloak/keycloak:24.0.1
-        container_name: keycloak
-        environment:
-            KEYCLOAK_ADMIN: keycloak
-            KEYCLOAK_ADMIN_PASSWORD: keycloak
-            KC_HOSTNAME_URL: 'http://auth.respotify.org'
-            KC_HOSTNAME_ADMIN_URL: 'http://auth.respotify.org'
-            KC_DB_USERNAME: postgres
-            KC_DB_PASSWORD: postgres
-            KC_DB: postgres
-            KC_DB_URL: jdbc:postgresql://keycloak-db/keycloak
-        command: ["--verbose", "start-dev"]
-        volumes:
-            - kc-db-volume:/opt/jboss/keycloak/standalone/data
-        depends_on:
-            - keycloak-db
-        networks:
-            - auth
-    
-    keycloak-db:
-        container_name: keycloak-db
-        image: postgres:latest
-        environment:
-            POSTGRES_DB: keycloak
-            POSTGRES_PASSWORD: postgres
-        volumes:
-            - kc-db-volume:/var/lib/postgresql/data
-        healthcheck:
-            test: ["CMD-SHELL", "pg_isready --username=postgres --dbname=keycloak"]
-            interval: 5s
-            timeout: 5s
-            retries: 3
-            
-volumes:
-    kc-db-volume:
+  whiteboard.service:
+    image: ${DOCKER_REGISTRY-}whiteboardservice
+    build:
+      context: .
+      dockerfile: Whiteboard.Service/Dockerfile

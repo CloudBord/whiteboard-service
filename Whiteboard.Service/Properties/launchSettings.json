@@ -2,7 +2,7 @@
   "profiles": {
     "Whiteboard.Service": {
       "commandName": "Project",
-      "commandLineArgs": "--port 7210"
+      "commandLineArgs": "--port 7219"
     },
     "Container (Dockerfile)": {
       "commandName": "Docker",

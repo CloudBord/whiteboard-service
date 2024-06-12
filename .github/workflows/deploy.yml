@@ -2,22 +2,18 @@ name: Build & Deploy
 
 on:
   push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
   workflow_run:
     workflows: ["SonarQube"]
     types:
       - completed
-    
-
+      
 jobs:
   on-success:
     runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.head_ref == 'main' }}
     steps:
       - run: echo 'The test workflow has passed, start deployment'
       - uses: actions/checkout@v4

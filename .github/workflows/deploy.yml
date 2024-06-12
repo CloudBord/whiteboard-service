@@ -2,36 +2,33 @@ name: Build & Deploy
 
 on:
   workflow_run:
-    workflows: ["Test"]
+    workflows: ["Snyk Security"]
     types:
       - completed
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
-    
-
+      
 jobs:
-  build:
+  on-success:
     runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.head_ref == 'main' && github.head_ref != 'develop' }}
     steps:
-    - uses: actions/checkout@v4
-    - uses: azure/docker-login@v1
-      with:
-        login-server: ${{ secrets.ACR_LOGIN_SERVER }}
-        username: ${{ secrets.ACR_USERNAME }}
-        password: ${{ secrets.ACR_PASSWORD }}
-    - name: build image
-      uses: docker/setup-buildx-action@v1
-
-    - name: Build and push
-      uses: docker/build-push-action@v5
-      
-      with:
-        context: .
-        file: ./Whiteboard.Service/Dockerfile
-        push: true
-        tags: ${{ secrets.ACR_LOGIN_SERVER }}/${{ secrets.ACR_REPOSITORY }}
+      - run: echo 'The test workflow has passed, start deployment'
+      - uses: actions/checkout@v4
+      - uses: azure/docker-login@v2
+        with:
+          login-server: ${{ secrets.ACR_LOGIN_SERVER }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+      - name: build image
+        uses: docker/setup-buildx-action@v3
+  
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        
+        with:
+          context: .
+          file: ./Whiteboard.Service/Dockerfile
+          push: true
+          tags: ${{ secrets.ACR_LOGIN_SERVER }}/${{ secrets.ACR_REPOSITORY }}

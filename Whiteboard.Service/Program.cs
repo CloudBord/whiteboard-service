@@ -1,12 +1,14 @@
+using AutoMapper;
 using Azure.Identity;
 using Microsoft.Azure.Functions.Worker;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Reflection;
 using Whiteboard.DataAccess.Context;
 using Whiteboard.DataAccess.Repositories;
+using Whiteboard.Service.Mapping;
+using Whiteboard.Service.Services;
 
 var host = new HostBuilder()
     .ConfigureFunctionsWebApplication()
@@ -35,8 +37,10 @@ var host = new HostBuilder()
     {
         services.AddApplicationInsightsTelemetryWorkerService();
 
-        services.AddDbContext<BoardContext>();
+        services.AddAutoMapper(typeof(MappingProfile));
+        services.AddScoped<IBoardService, BoardService>();
         services.AddScoped<IBoardRepository, BoardRepository>();
+        services.AddDbContext<BoardContext>();
 
         services.ConfigureFunctionsApplicationInsights();
     })

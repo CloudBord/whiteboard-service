@@ -2,7 +2,7 @@ name: Build & Deploy
 
 on:
   workflow_run:
-    workflows: ["SonarQube"]
+    workflows: ["Snyk Security"]
     types:
       - completed
       
@@ -12,7 +12,7 @@ jobs:
     defaults:
       run:
         shell: bash
-    if: ${{ github.event.workflow_run.conclusion == 'success' && github.head_ref == 'main' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.head_ref == 'main' && github.head_ref != 'develop' }}
     steps:
       - run: echo 'The test workflow has passed, start deployment'
       - uses: actions/checkout@v4

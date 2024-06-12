@@ -32,5 +32,5 @@ jobs:
       env:
         CONNECTIONSTRINGS__NPGSQL: ${{ secrets.CONNECTIONSTRINGS_NPGSQL_TEST }}
       run: dotnet ef database update --startup-project Whiteboard.Service --project Whiteboard.DataAccess
-    # - name: Test
-    #   run: dotnet test --no-build --verbosity normal
+    - name: Test
+      run: dotnet test --no-build --verbosity normal

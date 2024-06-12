@@ -1,7 +1,6 @@
 name: Build & Deploy
 
 on:
-  push:
   workflow_run:
     workflows: ["SonarQube"]
     types:

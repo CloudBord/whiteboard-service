@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <AzureFunctionsVersion>v4</AzureFunctionsVersion>
@@ -8,6 +8,7 @@
     <UserSecretsId>1994003e-0982-44ea-99de-f0c595439382</UserSecretsId>
     <DockerFastModeProjectMountDirectory>/home/site/wwwroot</DockerFastModeProjectMountDirectory>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <ProjectGuid>{6A81D283-5A8B-4D3B-B262-050D3573776C}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Responses\**" />

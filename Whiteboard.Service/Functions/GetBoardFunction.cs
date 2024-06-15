@@ -15,13 +15,29 @@ namespace Whiteboard.Service.Functions
         private readonly IMapper _mapper = mapper;
 
         [Function("GetBoard")]
-        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "boards/{id}")] HttpRequest req, uint id)
+        public async Task<IActionResult> GetBoard([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "boards/{id}")] HttpRequest req, uint id)
         {
             try
             {
                 var board = await _boardService.GetBoard(id, 1);
                 BoardDTO boardDto = _mapper.Map<BoardDTO>(board);
                 return new OkObjectResult(boardDto);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation("An exception occured: " + ex.Message);
+                return new BadRequestObjectResult("Bad things have happened!");
+            }
+        }
+
+        [Function("GetBoards")]
+        public async Task<IActionResult> GetBoards([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "boards")] HttpRequest req)
+        {
+            try
+            {
+                var boards = await _boardService.GetAllBoards(1);
+                BoardDTO[] boardsDto = _mapper.Map<BoardDTO[]>(boards); ;
+                return new OkObjectResult(boardsDto);
             }
             catch (Exception ex)
             {

@@ -24,9 +24,9 @@ namespace Whiteboard.Service.Services
             return await _whiteboardRepository.Delete(boardId, ownerId);
         }
 
-        public async Task<ICollection<Board>> GetAllBoards(uint userId)
+        public async Task<IEnumerable<Board>> GetAllBoards(uint userId)
         {
-            throw new NotImplementedException();
+            return await _whiteboardRepository.GetByMemberId(userId);
         }
 
         public async Task<Board?> GetBoard(uint boardId, uint memberId)

@@ -43,9 +43,10 @@ namespace Whiteboard.DataAccess.Repositories
             return board;
         }
 
-        public Task<IEnumerable<Board>> GetByMemberId(uint memberId)
+        public async Task<IEnumerable<Board>> GetByMemberId(uint memberId)
         {
-            throw new NotImplementedException();
+            var boards = await _boardContext.Boards.Where(b => b.MemberIds.Contains(memberId)).ToArrayAsync();
+            return boards;
         }
 
         public Task<IEnumerable<Board>> GetByOwnerId(uint ownerId)

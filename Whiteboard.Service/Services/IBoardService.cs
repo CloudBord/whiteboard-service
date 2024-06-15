@@ -12,7 +12,7 @@ namespace Whiteboard.Service.Services
     {
         Task<Board> CreateBoard(uint ownerId, string name);
         Task<Board?> GetBoard(uint boardId, uint memberId);
-        Task<ICollection<Board>> GetAllBoards(uint userId);
+        Task<IEnumerable<Board>> GetAllBoards(uint userId);
         Task UpdateBoard(Board board);
         Task<bool> DeleteBoard(uint boardId, uint ownerId);
     }

@@ -22,6 +22,8 @@ namespace Whiteboard.Service.Middleware
                 JsonWebToken token;
                 try
                 {
+                    var step1 = authorization.ToArray();
+                    var step2 = authorization.ToArray()[0];
                     token = new JsonWebToken(authorization.ToArray()[0]![7..]);
                 }
                 catch

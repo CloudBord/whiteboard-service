@@ -24,10 +24,9 @@ namespace Whiteboard.DataAccess.Repositories
             return board;
         }
 
-        public async Task<bool> Delete(uint boardId, uint ownerId)
+        public async Task<bool> Delete(uint boardId, Guid ownerId)
         {
             var board = await _boardContext.Boards.Where(b => b.Id.Equals(boardId) && b.OwnerId.Equals(ownerId)).FirstOrDefaultAsync();
-            
             if (board == null)
             {
                 _logger.LogWarning("Unauthorized deletion attempt detected");
@@ -37,24 +36,24 @@ namespace Whiteboard.DataAccess.Repositories
             return await _boardContext.SaveChangesAsync() > 0;
         }
 
-        public async Task<Board?> GetByBoardIdAndUserId(uint boardId, uint userId)
+        public async Task<Board?> GetByBoardIdAndUserId(uint boardId, Guid userId)
         {
             var board = await _boardContext.Boards.Where(b => b.Id.Equals(userId) && b.MemberIds.Contains(userId)).FirstOrDefaultAsync();
             return board;
         }
 
-        public async Task<IEnumerable<Board>> GetByMemberId(uint memberId)
+        public async Task<IEnumerable<Board>> GetByMemberId(Guid memberId)
         {
             var boards = await _boardContext.Boards.Where(b => b.MemberIds.Contains(memberId)).ToArrayAsync();
             return boards;
         }
 
-        public Task<IEnumerable<Board>> GetByOwnerId(uint ownerId)
+        public Task<IEnumerable<Board>> GetByOwnerId(Guid ownerId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Board> Update(Board board, uint memberId)
+        public Task<Board> Update(Board board, Guid memberId)
         {
             throw new NotImplementedException();
         }

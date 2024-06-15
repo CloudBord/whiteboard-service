@@ -9,7 +9,7 @@ namespace Whiteboard.Service.Services
         private readonly ILogger<BoardService> _logger = logger;
         private readonly IBoardRepository _whiteboardRepository = whiteboardRepository;
 
-        public async Task<Board> CreateBoard(uint ownerId, string name)
+        public async Task<Board> CreateBoard(Guid ownerId, string name)
         {
             return await _whiteboardRepository.Add(
                 new Board
@@ -19,17 +19,17 @@ namespace Whiteboard.Service.Services
                 });
         }
 
-        public async Task<bool> DeleteBoard(uint boardId, uint ownerId)
+        public async Task<bool> DeleteBoard(uint boardId, Guid ownerId)
         {
             return await _whiteboardRepository.Delete(boardId, ownerId);
         }
 
-        public async Task<IEnumerable<Board>> GetAllBoards(uint userId)
+        public async Task<IEnumerable<Board>> GetAllBoards(Guid userId)
         {
             return await _whiteboardRepository.GetByMemberId(userId);
         }
 
-        public async Task<Board?> GetBoard(uint boardId, uint memberId)
+        public async Task<Board?> GetBoard(uint boardId, Guid memberId)
         {
             return await _whiteboardRepository.GetByBoardIdAndUserId(boardId, memberId);
         }

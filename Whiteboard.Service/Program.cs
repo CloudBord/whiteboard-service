@@ -9,11 +9,17 @@ using Whiteboard.DataAccess.Repositories;
 using Whiteboard.Service.Mapping;
 using Whiteboard.Service.Middleware;
 using Whiteboard.Service.Services;
+using Whiteboard.Service.Validation;
+using FluentValidation;
 
 var host = new HostBuilder()
     .ConfigureFunctionsWebApplication(builder =>
     {
-        builder.UseMiddleware<AuthorizationFunctionMiddleware>();
+        builder.UseWhen<AuthorizationFunctionMiddleware>((context) =>
+        {
+            return context.FunctionDefinition.InputBindings.Values
+                .First(a => a.Type.EndsWith("Trigger")).Type == "httpTrigger";
+        });
     })
     .ConfigureAppConfiguration((context, builder) =>
     {
@@ -40,11 +46,13 @@ var host = new HostBuilder()
     .ConfigureServices((context, services) =>
     {
         services.AddApplicationInsightsTelemetryWorkerService();
+        services.AddValidatorsFromAssemblyContaining<CreateBoardValidator>(ServiceLifetime.Transient);
 
         services.AddHttpClient();
 
         services.AddAutoMapper(typeof(MappingProfile));
         services.AddScoped<IBoardService, BoardService>();
+        services.AddScoped<IClaimsHandler, ClaimsHandler>();
         services.AddScoped<IBoardRepository, BoardRepository>();
         services.AddDbContext<BoardContext>();
         services.AddSingleton<IJwtHandler, KeycloakJwtHandler>();

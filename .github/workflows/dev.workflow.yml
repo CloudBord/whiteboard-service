@@ -12,7 +12,6 @@ on:
 jobs:
   test:
     name: .NET Tests
-    if: ${{ github.head_ref.name != 'main' }}
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -44,7 +43,6 @@ jobs:
 
   sonar-analysis:
     name: SonarQube code analysis
-    if: ${{ github.head_ref.name != 'main' }}
     runs-on: windows-latest
     steps:
       - name: Set up JDK 17

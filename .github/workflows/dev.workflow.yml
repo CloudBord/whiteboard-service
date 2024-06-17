@@ -44,6 +44,7 @@ jobs:
 
   sonar-analysis:
     name: SonarQube code analysis
+    if: ${{ github.head_ref.name != 'main' }}
     runs-on: windows-latest
     steps:
       - name: Set up JDK 17

@@ -6,13 +6,10 @@ name: Deployment Pipeline
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
   test:
     name: .NET Tests
-    if: ${{ github.head_ref.name == 'main' }}
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -121,21 +118,31 @@ jobs:
         with:
           sarif_file: snyk.sarif
 
-  Deploy:
+  push-image:
+    name: Push to ACR
     runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
     needs: [snyk-analysis]
-    if: ${{ github.event_name == 'push' }}
     steps:
       - run: echo 'The test workflow has passed, start deployment'
       - uses: actions/checkout@v4
-      - uses: azure/docker-login@v2
+
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }} 
+
+      - name: 'Build and push image'
+        uses: azure/docker-login@v2
         with:
           login-server: ${{ secrets.ACR_LOGIN_SERVER }}
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
+      - run: |
+          docker build . -t ${{ secrets.ACR_LOGIN_SERVER }}/${{ secrets.ACR_REPOSITORY }}
+          docker push ${{ secrets.ACR_LOGIN_SERVER }}/${{ secrets.ACR_REPOSITORY }}
 
       - name: build image
         uses: docker/setup-buildx-action@v3
@@ -147,3 +154,23 @@ jobs:
           file: ./Whiteboard.Service/Dockerfile
           push: true
           tags: ${{ secrets.ACR_LOGIN_SERVER }}/${{ secrets.ACR_REPOSITORY }}
+
+  deploy-image:
+    name: Deploy update
+    needs: [push-image]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Login via Azure CLI
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+      - name: Get AKS credentials
+        run: az aks get-credentials -g ${{ secrets.AZURE_RESOURCE_GROUP }} -n ${{ secrets.AZURE_CLUSTER_NAME }}
+
+      - name: Restart deployment
+        run: kubectl rollout restart deployment/whiteboard-service
+        continue-on-error: true # If AKS cluster is not available, pipeline should not fail

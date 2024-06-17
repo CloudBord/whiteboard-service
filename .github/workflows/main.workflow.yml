@@ -10,9 +10,9 @@ on:
     branches: [ "main" ]
 
 jobs:
-  Test:
+  test:
+    name: .NET Tests
     runs-on: ubuntu-latest
-    
     steps:
     - uses: actions/checkout@v4
 
@@ -41,8 +41,8 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
 
-  Code-Analysis:
-    name: Build and analyze
+  sonar-analysis:
+    name: SonarQube code analysis
     runs-on: windows-latest
     steps:
       - name: Set up JDK 17
@@ -87,13 +87,14 @@ jobs:
           dotnet build
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
-  Security-Analysis:
+  snyk-analysis:
+    name: Snyk security analysis
     permissions:
       contents: read # for actions/checkout to fetch code
       security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
       actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
     runs-on: ubuntu-latest
-    needs: [Test, Code-Analysis]
+    needs: [test, sonar-analysis]
     steps:
       - uses: actions/checkout@v4
       - name: Setup .NET
@@ -117,14 +118,14 @@ jobs:
       - name: Upload result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: snyk-code.sarif
+          sarif_file: snyk.sarif
 
   Deploy:
     runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
-    needs: [Security-Analysis]
+    needs: [snyk-analysis]
     if: ${{ github.event_name == 'push' }}
     steps:
       - run: echo 'The test workflow has passed, start deployment'

@@ -13,7 +13,6 @@ jobs:
   test:
     name: .NET Tests
     runs-on: ubuntu-latest
-    if: ${{ github.head_ref.name == 'main' }}
     steps:
     - uses: actions/checkout@v4
 

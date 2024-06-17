@@ -4,6 +4,9 @@ on:
     workflows: ["Test"]
     types:
       - completed
+    branches:
+      - develop
+      - feature/*
     
 jobs:
   build:

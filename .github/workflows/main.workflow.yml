@@ -12,6 +12,7 @@ on:
 jobs:
   Test:
     runs-on: ubuntu-latest
+    if: ${{ github.head_ref == 'main' }}
     steps:
     - uses: actions/checkout@v4
 
@@ -95,10 +96,6 @@ jobs:
     needs: [Test, Code-Analysis]
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Snyk CLI to check for security issues
-        # Snyk can be used to break the build when it detects security issues.
-        # In this case we want to upload the SAST issues to GitHub Code Scanning
-        uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -114,6 +111,8 @@ jobs:
         env:
           # This is where you will need to introduce the Snyk API token created with your Snyk account
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --sarif-file-output=snyk.sarif
 
         # Runs Snyk Code (SAST) analysis and uploads result into GitHub.
         # Use || true to not fail the pipeline

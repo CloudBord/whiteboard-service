@@ -1,4 +1,3 @@
-using AutoMapper;
 using Azure.Identity;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Configuration;
@@ -8,16 +7,27 @@ using System.Reflection;
 using Whiteboard.DataAccess.Context;
 using Whiteboard.DataAccess.Repositories;
 using Whiteboard.Service.Mapping;
+using Whiteboard.Service.Middleware;
 using Whiteboard.Service.Services;
+using Whiteboard.Service.Validation;
+using FluentValidation;
 
 var host = new HostBuilder()
-    .ConfigureFunctionsWebApplication()
+    .ConfigureFunctionsWebApplication(builder =>
+    {
+        builder.UseWhen<AuthorizationFunctionMiddleware>((context) =>
+        {
+            return context.FunctionDefinition.InputBindings.Values
+                .First(a => a.Type.EndsWith("Trigger")).Type == "httpTrigger";
+        });
+    })
     .ConfigureAppConfiguration((context, builder) =>
     {
         var configuration = builder
             .SetBasePath(context.HostingEnvironment.ContentRootPath)
             .AddJsonFile("settings.json", true, true)
             .AddJsonFile("local.settings.json", true, false)
+            .AddEnvironmentVariables()
             .Build();
 
         if (context.HostingEnvironment.IsDevelopment() && !string.IsNullOrEmpty(context.HostingEnvironment.ApplicationName))
@@ -36,11 +46,16 @@ var host = new HostBuilder()
     .ConfigureServices((context, services) =>
     {
         services.AddApplicationInsightsTelemetryWorkerService();
+        services.AddValidatorsFromAssemblyContaining<CreateBoardValidator>(ServiceLifetime.Transient);
+
+        services.AddHttpClient();
 
         services.AddAutoMapper(typeof(MappingProfile));
         services.AddScoped<IBoardService, BoardService>();
+        services.AddScoped<IClaimsHandler, ClaimsHandler>();
         services.AddScoped<IBoardRepository, BoardRepository>();
         services.AddDbContext<BoardContext>();
+        services.AddSingleton<IJwtHandler, KeycloakJwtHandler>();
 
         services.ConfigureFunctionsApplicationInsights();
     })

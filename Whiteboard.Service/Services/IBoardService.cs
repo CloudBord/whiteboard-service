@@ -10,10 +10,10 @@ namespace Whiteboard.Service.Services
 {
     public interface IBoardService
     {
-        Task<Board> CreateBoard(uint ownerId, string name);
-        Task<Board?> GetBoard(uint boardId, uint memberId);
-        Task<ICollection<Board>> GetAllBoards(uint userId);
+        Task<Board> CreateBoard(Guid ownerId, string name);
+        Task<Board?> GetBoard(uint boardId, Guid memberId);
+        Task<IEnumerable<Board>> GetAllBoards(Guid userId);
         Task UpdateBoard(Board board);
-        Task<bool> DeleteBoard(uint boardId, uint ownerId);
+        Task<bool> DeleteBoard(uint boardId, Guid ownerId);
     }
 }

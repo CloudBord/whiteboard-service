@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -17,9 +19,9 @@ namespace Whiteboard.DataAccess.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    OwnerId = table.Column<long>(type: "bigint", nullable: false),
+                    OwnerId = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    MemberIds = table.Column<long[]>(type: "bigint[]", nullable: false)
+                    MemberIds = table.Column<List<Guid>>(type: "uuid[]", nullable: false)
                 },
                 constraints: table =>
                 {

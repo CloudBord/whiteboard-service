@@ -10,7 +10,8 @@ on:
     branches: [ "develop", "feature/*" ]
 
 jobs:
-  Test:
+  test:
+    name: .NET Tests
     if: ${{ github.head_ref.name != 'main' }}
     runs-on: ubuntu-latest
     steps:
@@ -41,8 +42,8 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
 
-  Analyze:
-    name: Build and analyze
+  sonar-analysis:
+    name: SonarQube code analysis
     runs-on: windows-latest
     steps:
       - name: Set up JDK 17

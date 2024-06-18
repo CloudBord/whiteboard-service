@@ -17,7 +17,6 @@ namespace Whiteboard.Service.Functions
         private readonly IBoardService _boardService = boardService;
         private readonly IClaimsHandler _claimsHandler = claimsHandler;
 
-        [Authorized]
         [Function("GetBoard")]
         public async Task<IActionResult> GetBoard([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "boards/{id}")] HttpRequest req, uint id, FunctionContext executionContext)
         {
@@ -35,7 +34,6 @@ namespace Whiteboard.Service.Functions
             }
         }
 
-        [Authorized]
         [Function("GetBoards")]
         public async Task<IActionResult> GetBoards([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "boards")] HttpRequest req, FunctionContext executionContext)
         {

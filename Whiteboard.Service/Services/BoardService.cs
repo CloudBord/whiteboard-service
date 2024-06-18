@@ -21,7 +21,7 @@ namespace Whiteboard.Service.Services
 
         public async Task<bool> DeleteBoard(uint boardId, Guid ownerId)
         {
-            return await _whiteboardRepository.Delete(boardId, ownerId);
+            return await _whiteboardRepository.DeleteBoard(boardId, ownerId);
         }
 
         public async Task<IEnumerable<Board>> GetAllBoards(Guid userId)
@@ -34,10 +34,15 @@ namespace Whiteboard.Service.Services
             return await _whiteboardRepository.GetByBoardIdAndUserId(boardId, memberId);
         }
 
-        public async Task UpdateBoard(Board board)
+        public async Task<Board?> UpdateBoard(uint boardId, Guid userId, string boardContents)
         {
-            //Board board = await _whiteboardRepository.GetByBoardIdAndUserId(board.)
-            throw new NotImplementedException();
+            Board? board = await _whiteboardRepository.GetByBoardIdAndUserId(boardId, userId);
+            if (board == null)
+            {
+                return null;
+            }
+            
+            return await _whiteboardRepository.UpdateBoard(board);
         }
     }
 }

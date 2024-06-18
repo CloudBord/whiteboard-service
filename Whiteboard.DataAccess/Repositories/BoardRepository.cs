@@ -24,7 +24,7 @@ namespace Whiteboard.DataAccess.Repositories
             return board;
         }
 
-        public async Task<bool> Delete(uint boardId, Guid ownerId)
+        public async Task<bool> DeleteBoard(uint boardId, Guid ownerId)
         {
             var board = await _boardContext.Boards.Where(b => b.Id.Equals(boardId) && b.OwnerId.Equals(ownerId)).FirstOrDefaultAsync();
             if (board == null)
@@ -53,9 +53,12 @@ namespace Whiteboard.DataAccess.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<Board> Update(Board board, Guid memberId)
+        public async Task<Board> UpdateBoard(Board board)
         {
-            throw new NotImplementedException();
+            _boardContext.Update(board);
+            await _boardContext.SaveChangesAsync();
+            return board;
+
         }
     }
 }

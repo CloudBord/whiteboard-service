@@ -13,7 +13,7 @@ namespace Whiteboard.Service.Services
         Task<Board> CreateBoard(Guid ownerId, string name);
         Task<Board?> GetBoard(uint boardId, Guid memberId);
         Task<IEnumerable<Board>> GetAllBoards(Guid userId);
-        Task UpdateBoard(Board board);
+        Task<Board?> UpdateBoard(uint boardId, Guid userId, string boardContents);
         Task<bool> DeleteBoard(uint boardId, Guid ownerId);
     }
 }

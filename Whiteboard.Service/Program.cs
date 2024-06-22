@@ -48,8 +48,6 @@ var host = new HostBuilder()
         services.AddApplicationInsightsTelemetryWorkerService();
         services.AddValidatorsFromAssemblyContaining<CreateBoardValidator>(ServiceLifetime.Transient);
 
-        services.AddHttpClient();
-
         services.AddAutoMapper(typeof(MappingProfile));
         services.AddScoped<IBoardService, BoardService>();
         services.AddScoped<IClaimsHandler, ClaimsHandler>();

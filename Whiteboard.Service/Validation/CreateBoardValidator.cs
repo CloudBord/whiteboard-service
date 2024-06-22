@@ -13,7 +13,7 @@ namespace Whiteboard.Service.Validation
     {
         public CreateBoardValidator() 
         { 
-            RuleFor(x => x.Name)
+            RuleFor(x => x.Title)
                 .NotEmpty().WithMessage("Board name is required.");
         }
     }

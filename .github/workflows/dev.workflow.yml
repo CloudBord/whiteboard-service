@@ -37,6 +37,12 @@ jobs:
     - uses: actions/checkout@master
       with:
         fetch-depth: 0
+        
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'adopt'
+        java-version: '17' 
 
     - name: Set up .NET Core
       uses: actions/setup-dotnet@v4

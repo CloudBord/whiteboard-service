@@ -18,6 +18,8 @@ namespace Whiteboard.DataAccess.Models
         public required string Name { get; set; }
         [JsonProperty("memberIds")]
         public List<Guid> MemberIds { get; set; } = [];
+        [JsonProperty("boardContents")]
+        public string? BoardContents { get; set; }
 
         public Board() { }
     }

@@ -1,6 +1,6 @@
-namespace Whiteboard.Tests
+namespace Whiteboard.Tests.Unit
 {
-    public class UnitTest1
+    public class BoardServiceTest
     {
         [Fact]
         public void Test1()

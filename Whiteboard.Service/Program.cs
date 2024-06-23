@@ -9,8 +9,6 @@ using Whiteboard.DataAccess.Repositories;
 using Whiteboard.Service.Mapping;
 using Whiteboard.Service.Middleware;
 using Whiteboard.Service.Services;
-using Whiteboard.Service.Validation;
-using FluentValidation;
 
 var host = new HostBuilder()
     .ConfigureFunctionsWebApplication(builder =>
@@ -46,12 +44,11 @@ var host = new HostBuilder()
     .ConfigureServices((context, services) =>
     {
         services.AddApplicationInsightsTelemetryWorkerService();
-        services.AddValidatorsFromAssemblyContaining<CreateBoardValidator>(ServiceLifetime.Transient);
 
         services.AddAutoMapper(typeof(MappingProfile));
-        services.AddScoped<IBoardService, BoardService>();
         services.AddScoped<IClaimsHandler, ClaimsHandler>();
         services.AddScoped<IBoardRepository, BoardRepository>();
+        services.AddScoped<IMessageService, MessageService>();
         services.AddDbContext<BoardContext>();
         services.AddSingleton<IJwtHandler, KeycloakJwtHandler>();
 

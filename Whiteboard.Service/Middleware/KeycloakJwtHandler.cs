@@ -1,12 +1,7 @@
 ﻿using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 
@@ -45,8 +40,8 @@ namespace Whiteboard.Service.Middleware
         {
             var handler = new HttpClientHandler();
             var httpClient = new HttpClient(handler);
-            var jwksUrl = _configuration["KC_JWKS_URL"]
-                ?? throw new ArgumentNullException("KC_JWKS_URL");
+            var jwksUrl = _configuration["Jwks:Url"]
+                ?? throw new ArgumentNullException("Jwks:Url");
 
             var response = await httpClient.GetAsync(jwksUrl);
             response.EnsureSuccessStatusCode();

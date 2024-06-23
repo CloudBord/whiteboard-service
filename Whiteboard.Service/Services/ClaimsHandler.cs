@@ -12,7 +12,8 @@ namespace Whiteboard.Service.Services
     {
         public Guid GetUserId(FunctionContext executionContext)
         {
-            IEnumerable<Claim> claims = (IEnumerable<Claim>)executionContext.Items["Claims"];
+            executionContext.Items.TryGetValue("Claims", out object? output);
+            IEnumerable<Claim>? claims = output as IEnumerable<Claim>;
             if (claims == null || !claims.Any())
             {
                 throw new UnauthorizedAccessException("Claims cannot be null");

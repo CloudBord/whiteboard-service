@@ -33,17 +33,6 @@ jobs:
           docker build . -t ${{ secrets.ACR_LOGIN_SERVER }}/${{ secrets.ACR_REPOSITORY }}
           docker push ${{ secrets.ACR_LOGIN_SERVER }}/${{ secrets.ACR_REPOSITORY }}
 
-      - name: build image
-        uses: docker/setup-buildx-action@v3
-  
-      - name: Build and push
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: ${{ secrets.ACR_LOGIN_SERVER }}/${{ secrets.ACR_REPOSITORY }}
-
   deploy-image:
     name: Deploy update
     needs: [push-image]

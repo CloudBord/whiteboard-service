@@ -27,17 +27,6 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
 
-    - name: Setup testing database
-      run: docker run -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres
-
-    - name: Setup Entity Framework tool
-      run: dotnet tool install --global dotnet-ef
-      
-    - name: Run migrations
-      env:
-        CONNECTIONSTRINGS__NPGSQL: ${{ secrets.CONNECTIONSTRINGS_NPGSQL_TEST }}
-      run: dotnet ef database update --startup-project Whiteboard.Service --project Whiteboard.DataAccess
-
     - name: Test
       run: dotnet test --no-build --verbosity normal
 
@@ -48,11 +37,26 @@ jobs:
     - uses: actions/checkout@master
       with:
         fetch-depth: 0
+        
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'adopt'
+        java-version: '17' 
+
+    - name: Set up .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+          dotnet-version: '8.0'
+
+    - name: Install SonarScanner
+      run: dotnet tool install --global dotnet-sonarscanner
 
     - name: SonarCloud Scan
-      uses: sonarsource/sonarcloud-github-action@v2.2.0
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: |
+        dotnet sonarscanner begin /k:"CloudBord-whiteboard-service" /o:"cloudbord" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+        dotnet build
+        dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
 
   snyk-analysis:
     name: Snyk security analysis

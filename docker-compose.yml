@@ -1,8 +1,0 @@
-version: '3.4'
-
-services:
-  whiteboard.service:
-    image: ${DOCKER_REGISTRY-}whiteboardservice
-    build:
-      context: .
-      dockerfile: Whiteboard.Service/Dockerfile

@@ -18,7 +18,8 @@ namespace Whiteboard.Service.Services
             {
                 throw new UnauthorizedAccessException("Claims cannot be null");
             }
-            Claim? user = claims.Where(c => c.Type == "sub").FirstOrDefault() ?? throw new UnauthorizedAccessException("No user ID found in claims");
+            Claim? user = claims.Where(c => c.Type == "sub").FirstOrDefault() 
+                ?? throw new UnauthorizedAccessException("No user ID found in claims");
             return new Guid(user.Value.ToString());
         }
     }
